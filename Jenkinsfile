@@ -5,7 +5,7 @@ pipeline {
         stage('git checkout') {
             steps {
                 script{
-                    checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/purna16/CICD-pipeline.git']])
+                    checkout scmGit(branches: [[name: '*/main']], extengitsions: [], userRemoteConfigs: [[url: 'https://github.com/purna16/CICD-Pipeline.git']])
                 }
         
             }
@@ -45,6 +45,29 @@ pipeline {
             steps{
                 script{
                     waitForQualityGate abortPipeline: false, credentialsId: 'sonarqube'
+                }
+            }
+        }
+        stage{
+            steps{
+                script{
+                    nexusArtifactUploader artifacts: 
+                    [
+                        [
+                            
+                            artifactId: 'springboot', 
+                            classifier: '', 
+                            file: 'target/springboot-1.0.0.jar', 
+                            type: 'jar'
+                            ]
+                    ],
+                     credentialsId: 'nexus', 
+                     groupId: 'com.example', 
+                     nexusUrl: '34.229.14.39:8081', 
+                     nexusVersion: 'nexus3', 
+                     protocol: 'http', 
+                     repository: 'http://34.229.14.39:8081/repository/purnacicd-release/', 
+                     version: '1.0.0'
                 }
             }
         }
