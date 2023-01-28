@@ -83,7 +83,7 @@ pipeline {
                 }
             }
         }
-    }   
+       
         stage('push image to dockerhub'){
             steps{
                 script{
@@ -104,4 +104,5 @@ pipeline {
                 }
             }
         }
+    }
 }
