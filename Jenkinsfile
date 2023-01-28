@@ -88,21 +88,25 @@ pipeline {
             steps{
                 script{
 
-                  withCredentials([string(credentialsId: 'dockerhud_pass', variable: 'dockerhud_pass')]) {
-                     
-                     sh 'docker login -u purna16 -p ${dockerhud_pass}'
+                  withCredentials([string(credentialsId: 'dockerhub_passwd', variable: 'dockerhub_passwd')]) {
 
-                     sh 'docker image push purna16/$JOB_NAME:v1.BUILD_ID'
+                    sh 'docker login -u purna16 -p ${dockerhub_passwd}'
+
+                    sh 'docker image push purna16/$JOB_NAME:v1.BUILD_ID'
                      
-                     sh 'docker image push purna16/$JOB_NAME:latest'
+                    sh 'docker image push purna16/$JOB_NAME:latest'
+    
+                  }
+                     
+                     
 
 
                      
     
-                  }
-
                 }
+
             }
         }
     }
 }
+
