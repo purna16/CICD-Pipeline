@@ -48,7 +48,7 @@ pipeline {
                 }
             }
         }
-        stage{
+        stage('nexus artifact upload'){
             steps{
                 script{
                     nexusArtifactUploader artifacts: 
@@ -57,7 +57,7 @@ pipeline {
                             
                             artifactId: 'springboot', 
                             classifier: '', 
-                            file: 'target/springboot-1.0.0.jar', 
+                            file: 'target/uber.jar', 
                             type: 'jar'
                             ]
                     ],
@@ -66,7 +66,7 @@ pipeline {
                      nexusUrl: '34.229.14.39:8081', 
                      nexusVersion: 'nexus3', 
                      protocol: 'http', 
-                     repository: 'http://34.229.14.39:8081/repository/purnacicd-release/', 
+                     repository: 'purnacicd-release', 
                      version: '1.0.0'
                 }
             }
