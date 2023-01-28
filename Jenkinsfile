@@ -1,73 +1,52 @@
-pipeline{
-    
-    agent any 
-    
+pipeline {
+    agent any
+
     stages {
-        
-        stage('Git Checkout'){
-            
-            steps{
-                
+        stage('git checkout') {
+            steps {
                 script{
-                    
-                    git branch: 'main', url: 'https://github.com/vikash-kumar01/mrdevops_javaapplication.git'
+                    checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/purna16/CICD-pipeline.git']])
                 }
+        
             }
         }
-        stage('UNIT testing'){
-            
+        stage('unit tetsing'){
             steps{
-                
                 script{
                     
                     sh 'mvn test'
                 }
             }
         }
-        stage('Integration testing'){
-            
+        stage('integration'){
             steps{
-                
                 script{
-                    
                     sh 'mvn verify -DskipUnitTests'
                 }
             }
         }
-        stage('Maven build'){
-            
+        stage('mvn build'){
             steps{
-                
                 script{
-                    
                     sh 'mvn clean install'
                 }
             }
         }
-        stage('Static code analysis'){
-            
+        stage('static code analysis'){
             steps{
-                
                 script{
-                    
-                    withSonarQubeEnv(credentialsId: 'sonar-api') {
-                        
+                    withSonarQubeEnv(credentialsId: 'sonarqube') {
                         sh 'mvn clean package sonar:sonar'
-                    }
-                   }
-                    
-                }
-            }
-            stage('Quality Gate Status'){
-                
-                steps{
-                    
-                    script{
-                        
-                        waitForQualityGate abortPipeline: false, credentialsId: 'sonar-api'
                     }
                 }
             }
         }
-        
+        stage('soar quality gate'){
+            steps{
+                script{
+                    waitForQualityGate abortPipeline: false, credentialsId: 'sonarqube'
+                }
+            }
+        }
+    }
 }
