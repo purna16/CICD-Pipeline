@@ -93,7 +93,7 @@ pipeline {
                 
                    
 
-                    sh 'docker login -u purna16 -p ${doc}'
+                    sh 'docker login -u shivar640@gmail.com -p ${doc}'
 
                     sh 'docker image push purna16/$JOB_NAME:v1.BUILD_ID'
                      
