@@ -83,5 +83,25 @@ pipeline {
                 }
             }
         }
-    }
+    }   
+        stage('push image to dockerhub'){
+            steps{
+                script{
+
+                  withCredentials([string(credentialsId: 'dockerhud_pass', variable: 'dockerhud_pass')]) {
+                     
+                     sh 'docker login -u purna16 -p  ${'dockerhud_pass}'
+
+                     sh 'docker image push purna16/$JOB_NAME:v1.BUILD_ID'
+                     
+                     sh 'docker image push purna16/$JOB_NAME:latest'
+
+
+                     
+    
+                  }
+
+                }
+            }
+        }
 }
