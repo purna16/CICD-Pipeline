@@ -51,6 +51,7 @@ pipeline {
         stage('nexus artifact upload'){
             steps{
                 script{
+                    def nexusrepo = readpomversion.version.endswith{"SNAPSHOT"} ? "purnacicd-release-snapshot" : "purnacicd-release"
                     def readpomversion= readMavenPom file: 'pom.xml'
                     nexusArtifactUploader artifacts: 
                     [
@@ -67,7 +68,7 @@ pipeline {
                      nexusUrl: '34.229.14.39:8081', 
                      nexusVersion: 'nexus3', 
                      protocol: 'http', 
-                     repository: 'purnacicd-release', 
+                     repository: nexusrepo, 
                      version: "${readpomversion.version}"
                 }
             }
