@@ -51,7 +51,7 @@ pipeline {
         stage('nexus artifact upload'){
             steps{
                 script{
-                    def nexusrepo = readpomversion.version.endswith{"SNAPSHOT"} ? "purnacicd-release-snapshot" : "purnacicd-release"
+                    def nexusrepo = readpomversion.version.endsWith{"SNAPSHOT"} ? "purnacicd-release-snapshot" : "purnacicd-release"
                     def readpomversion= readMavenPom file: 'pom.xml'
                     nexusArtifactUploader artifacts: 
                     [
