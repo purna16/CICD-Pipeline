@@ -7,6 +7,30 @@ pipeline{
         choice(name: 'action', choices: 'create\ndestroy', description: 'apply or delete the application files on eks cluster')
         string(name: 'cluster', defaultValue: 'demo-cluster', description: 'Choose EKS Cluster Name')
         string(name: 'region', defaultValue: 'us-east-1', description: 'choose AWS region of cluster')
+
     }
+    environment{
+
+        ACCESS_KEY =  credentials('ACCESS_KEY')
+        SECRET_KEY =  credentials('SECRET_KEY')
+
+    }
+    stages{
+
+        stage('git checkout'){
+
+            steps{
+
+                script{
+
+                    checkout scmGit(branches: [[name: '*/main']], extengitsions: [], userRemoteConfigs: [[url: 'https://github.com/purna16/CICD-Pipeline.git']])
+
+                }
+
+            }
+        }
+    }
+
+      
 
 }
