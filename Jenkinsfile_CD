@@ -1,0 +1,12 @@
+pipeline{
+
+    agent any
+
+    parameters{
+
+        choice(name: 'action', choices: 'create\ndestroy', description: 'apply or delete the application files on eks cluster')
+        string(name: 'cluster', defaultValue: 'demo-cluster', description: 'Choose EKS Cluster Name')
+        string(name: 'region', defaultValue: 'us-east-1', description: 'choose AWS region of cluster')
+    }
+
+}
