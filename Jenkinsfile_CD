@@ -4,7 +4,7 @@ pipeline{
 
     parameters{
 
-        choice(name: 'action', choices: 'create\ndestroy', description: 'apply or delete the application files on eks cluster')
+        choice(name: 'action', choices: 'apply\ndelete', description: 'apply or delete the application files on eks cluster')
         string(name: 'cluster', defaultValue: 'demo-cluster', description: 'Choose EKS Cluster Name')
         string(name: 'region', defaultValue: 'us-east-1', description: 'choose AWS region of cluster')
 
@@ -46,9 +46,31 @@ pipeline{
             }
 
         }
-        stage('')
+        stage('Deployment on eks cluster'){
+
+            when{ expression { params.action == 'apply'} }
+            steps{
+
+                script{
+
+                    def apply = false
+
+                    try{
+                     input message: 'please confirm apply to intiatiate the deployment', ok: 'ready to deploy the config'
+                     apply = true 
+                     }catch(err){
+                     apply = false
+                     currentBuild.result = 'UNSTABLE' 
+                    }
+                    if(apply){
+                     sh """
+                        kubectl apply -f .
+                     """   
+                    }
+
+
+                }
+            }
+        }
     }
-
-      
-
 }
